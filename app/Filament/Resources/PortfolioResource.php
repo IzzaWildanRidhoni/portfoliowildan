@@ -43,7 +43,7 @@ class PortfolioResource extends Resource
                             ->disabled()
                             ->dehydrated(),
 
-                        Forms\Components\Select::make('category')
+                            Forms\Components\Select::make('category')
                             ->label('Kategori')
                             ->options([
                                 'Web Development' => 'Web Development',
@@ -53,8 +53,22 @@ class PortfolioResource extends Resource
                                 'E-Commerce' => 'E-Commerce',
                                 'CMS Development' => 'CMS Development',
                             ])
+                            ->searchable()
                             ->required()
-                            ->searchable(),
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('name')
+                                    ->label('Kategori Baru')
+                                    ->required()
+                                    ->unique(
+                                        table: 'portfolios',
+                                        column: 'category',
+                                        ignoreRecord: true // supaya saat edit tidak error
+                                    ),
+                            ])
+                            ->createOptionUsing(function (array $data) {
+                                return $data['name'];
+                            }),
+                        
 
                         Forms\Components\TextInput::make('client')
                             ->label('Nama Klien')
@@ -175,6 +189,10 @@ class PortfolioResource extends Resource
                 Tables\Columns\IconColumn::make('is_published')
                     ->label('Published')
                     ->boolean()
+                    ->action(function (Portfolio $record) {
+                        $record->is_published = !$record->is_published;
+                        $record->save();
+                    })
                     ->toggleable(),
 
                 Tables\Columns\TextColumn::make('created_at')
