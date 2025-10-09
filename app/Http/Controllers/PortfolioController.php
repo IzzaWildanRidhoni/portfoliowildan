@@ -11,8 +11,9 @@ class PortfolioController extends Controller
     {
         $portfolio = DB::table('portfolios')->get();
 
-        // dd($portfolio);
-        return view('portfolio.index', compact('portfolio'));
+        $category = DB::table('portfolios')->select('category')->distinct()->get();
+
+        return view('portfolio.index', compact('portfolio', 'category'));
     }
 
     function show($slug)

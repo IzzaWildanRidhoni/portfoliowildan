@@ -17,17 +17,18 @@
                 <!-- Portfolio Filters -->
                 <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="200">
                     <li data-filter="*" class="filter-active">All</li>
-                    <li data-filter=".filter-company">Company</li>
-                    <li data-filter=".filter-community">Community</li>
-                    <li data-filter=".filter-education">Education</li>
-                    <li data-filter=".filter-marketplace">Marketplace</li>
+                    @foreach ($category as $item)
+                        <li data-filter=".filter-{{ strtolower(str_replace(' ', '-', $item->category)) }}">
+                            {{ $item->category }}</li>
+                    @endforeach
                 </ul><!-- End Portfolio Filters -->
 
                 <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="300">
 
                     @foreach ($portfolio as $item)
                         <!-- PT. Shoenary Javanesia Inc - APPS -->
-                        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-company">
+                        <div
+                            class="col-lg-4 col-md-6 portfolio-item isotope-item filter-{{ strtolower(str_replace(' ', '-', $item->category)) }}">
                             <div class="portfolio-card">
                                 <div class="portfolio-img">
                                     <img src="{{ $item->image ? asset('storage/' . $item->image) : asset('img/portfolio/portfolio-2.webp') }}"
@@ -41,7 +42,7 @@
                                 </div>
                                 <div class="portfolio-info">
                                     <h4>{{ $item->title }}</h4>
-                                    <p>{{ $item->category }}</p>
+                                    <p>{{ $item->project_overview }}</p>
                                     <div class="portfolio-tags">
                                         @php
                                             $technologies = json_decode($item->technologies);
