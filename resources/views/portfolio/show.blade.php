@@ -142,26 +142,44 @@
                             </div>
                         </div>
 
-                        <div class="project-features" data-aos="fade-up" data-aos-delay="300">
-                            <h3><i class="bi bi-stars"></i> Key Features</h3>
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <ul class="feature-list">
-                                        <li><i class="bi bi-check2-circle"></i> Real-time Data Visualization</li>
-                                        <li><i class="bi bi-check2-circle"></i> User Role Management</li>
-                                        <li><i class="bi bi-check2-circle"></i> Secure Authentication</li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-6">
-                                    <ul class="feature-list">
-                                        <li><i class="bi bi-check2-circle"></i> Customizable Dashboards</li>
-                                        <li><i class="bi bi-check2-circle"></i> Data Export Options</li>
-                                        <li><i class="bi bi-check2-circle"></i> Multi-device Support</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                        @if ($portfolio->key_features)
+                            @php
+                                $key_features = is_array($portfolio->key_features)
+                                    ? $portfolio->key_features
+                                    : json_decode($portfolio->key_features, true);
 
+                                // Hitung jumlah item per kolom
+                                $total_features = count($key_features ?? []);
+                                $left_count = ceil($total_features / 2);
+                                $right_count = $total_features - $left_count;
+
+                                // Pisahkan array menjadi 2 bagian
+                                $left_features = array_slice($key_features, 0, $left_count);
+                                $right_features = array_slice($key_features, $left_count);
+                            @endphp
+
+                            @if ($total_features > 0)
+                                <div class="project-features" data-aos="fade-up" data-aos-delay="300">
+                                    <h3><i class="bi bi-stars"></i> Key Features</h3>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <ul class="feature-list">
+                                                @foreach ($left_features as $feature)
+                                                    <li><i class="bi bi-check2-circle"></i> {{ $feature }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <ul class="feature-list">
+                                                @foreach ($right_features as $feature)
+                                                    <li><i class="bi bi-check2-circle"></i> {{ $feature }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                        @endif
                         <div class="cta-buttons" data-aos="fade-up" data-aos-delay="400">
                             @if ($portfolio->project_url)
                                 <a href="{{ $portfolio->project_url }}" class="btn-view-project" target="_blank">View

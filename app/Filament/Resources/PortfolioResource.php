@@ -63,13 +63,12 @@ class PortfolioResource extends Resource
                                     ->unique(
                                         table: 'portfolios',
                                         column: 'category',
-                                        ignoreRecord: true // supaya saat edit tidak error
+                                        ignoreRecord: true
                                     ),
                             ])
                             ->createOptionUsing(function (array $data) {
                                 return $data['name'];
                             }),
-
 
                         Forms\Components\TextInput::make('client')
                             ->label('Nama Klien')
@@ -110,6 +109,24 @@ class PortfolioResource extends Resource
                                 'MongoDB',
                                 'JavaScript',
                                 'TypeScript',
+                            ])
+                            ->columnSpanFull(),
+
+                        Forms\Components\TagsInput::make('key_features')
+                            ->label('Fitur Utama')
+                            ->placeholder('Contoh: Responsive Design, Real-time Chat, Payment Gateway')
+                            ->helperText('Tekan Enter setelah mengetik setiap fitur')
+                            ->suggestions([
+                                'Responsive Design',
+                                'SEO Optimized',
+                                'Real-time Notifications',
+                                'Payment Gateway Integration',
+                                'Multi-language Support',
+                                'Admin Dashboard',
+                                'API Integration',
+                                'Cloud Storage',
+                                'Authentication System',
+                                'Email Marketing',
                             ])
                             ->columnSpanFull(),
                     ]),
@@ -176,6 +193,14 @@ class PortfolioResource extends Resource
                     ->label('Klien')
                     ->searchable()
                     ->toggleable(),
+
+                Tables\Columns\TextColumn::make('key_features')
+                    ->label('Fitur Utama')
+                    ->badge()
+                    ->separator(',')
+                    ->limit(3)
+                    ->toggleable()
+                    ->wrap(),
 
                 Tables\Columns\TextColumn::make('project_date')
                     ->label('Tanggal')
