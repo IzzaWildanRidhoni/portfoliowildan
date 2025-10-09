@@ -42,19 +42,20 @@
                                     }
                                     }
                                 </script>
+                                @php
+                                    $gallery = json_decode($portfolio->gallery);
+                                @endphp
                                 <div class="swiper-wrapper">
                                     <div class="swiper-slide">
-                                        <img src="{{ asset('img/portfolio/portfolio-5.webp') }}" alt="Portfolio Image"
+                                        <img src="{{ asset('storage/' . $portfolio->image) }}" alt="Portfolio Image"
                                             class="img-fluid">
                                     </div>
-                                    <div class="swiper-slide">
-                                        <img src="{{ asset('img/portfolio/portfolio-7.webp') }}" alt="Portfolio Image"
-                                            class="img-fluid">
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <img src="{{ asset('img/portfolio/portfolio-8.webp') }}" alt="Portfolio Image"
-                                            class="img-fluid">
-                                    </div>
+                                    @foreach ($gallery as $image)
+                                        <div class="swiper-slide">
+                                            <img src="{{ asset('storage/' . $image) }}" alt="Portfolio Image"
+                                                class="img-fluid">
+                                        </div>
+                                    @endforeach
                                 </div>
                                 <div class="swiper-button-prev"></div>
                                 <div class="swiper-button-next"></div>
@@ -62,32 +63,29 @@
                         </div>
 
                         <div class="thumbnail-grid" data-aos="fade-up" data-aos-delay="200">
+
                             <div class="row g-2 mt-3">
                                 <div class="col-3">
-                                    <img src="{{ asset('img/portfolio/portfolio-4.webp') }}" alt="Gallery Image"
+                                    <img src="{{ asset('storage/' . $portfolio->image) }}" alt="Portfolio Image"
                                         class="img-fluid glightbox">
                                 </div>
-                                <div class="col-3">
-                                    <img src="{{ asset('img/portfolio/portfolio-6.webp') }}" alt="Gallery Image"
-                                        class="img-fluid glightbox">
-                                </div>
-                                <div class="col-3">
-                                    <img src="{{ asset('img/portfolio/portfolio-11.webp') }}" alt="Gallery Image"
-                                        class="img-fluid glightbox">
-                                </div>
-                                <div class="col-3">
-                                    <img src="{{ asset('img/portfolio/portfolio-12.webp') }}" alt="Gallery Image"
-                                        class="img-fluid glightbox">
-                                </div>
+                                @foreach ($gallery as $image)
+                                    <div class="col-3">
+                                        <img src="{{ asset('storage/' . $image) }}" alt="Gallery Image"
+                                            class="img-fluid glightbox">
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
 
+                        @php
+                            $technologies = json_decode($portfolio->technologies);
+
+                        @endphp
                         <div class="tech-stack-badges" data-aos="fade-up" data-aos-delay="300">
-                            <span>Angular</span>
-                            <span>Express.js</span>
-                            <span>PostgreSQL</span>
-                            <span>GraphQL</span>
-                            <span>Firebase</span>
+                            @foreach ($technologies as $technology)
+                                <span>{{ $technology }}</span>
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -96,26 +94,28 @@
                     <div class="portfolio-details-content">
                         <div class="project-meta">
                             <div class="badge-wrapper">
-                                <span class="project-badge">UX/UI Design</span>
+                                <span class="project-badge">{{ $portfolio->category }}</span>
                             </div>
                             <div class="date-client">
                                 <div class="meta-item">
                                     <i class="bi bi-calendar-check"></i>
-                                    <span>September 2024</span>
+                                    <span>{{ $portfolio->project_date ? $portfolio->project_date : 'N/A' }}</span>
                                 </div>
                                 <div class="meta-item">
                                     <i class="bi bi-buildings"></i>
-                                    <span>DigitalCraft Solutions</span>
+                                    <span>{{ $portfolio->client }}</span>
                                 </div>
                             </div>
                         </div>
 
                         <h2 class="project-title">{{ $portfolio->title }}</h2>
 
-                        <div class="project-website">
-                            <i class="bi bi-link-45deg"></i>
-                            <a href="#" target="_blank">projectwebsite.example.com</a>
-                        </div>
+                        @if ($portfolio->project_url)
+                            <div class="project-website">
+                                <i class="bi bi-link-45deg"></i>
+                                <a href="{{ $portfolio->project_url }}" target="_blank">{{ $portfolio->project_url }}</a>
+                            </div>
+                        @endif
 
                         <div class="project-overview">
                             <p class="lead">
@@ -163,9 +163,9 @@
 
                                 <div class="accordion-item" data-aos="fade-up" data-aos-delay="200">
                                     <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button"
-                                            data-bs-toggle="collapse" data-bs-target="#portfolio-details-collapse-3"
-                                            aria-expanded="false" aria-controls="collapseThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#portfolio-details-collapse-3" aria-expanded="false"
+                                            aria-controls="collapseThree">
                                             <i class="bi bi-award me-2"></i> The Solution
                                         </button>
                                     </h2>
@@ -203,8 +203,18 @@
                         </div>
 
                         <div class="cta-buttons" data-aos="fade-up" data-aos-delay="400">
-                            <a href="#" class="btn-view-project">View Live Project</a>
-                            <a href="#" class="btn-next-project">Next Project <i class="bi bi-arrow-right"></i></a>
+                            @if ($prevproject)
+                                <a href="{{ route('portfolio.show', $prevproject->slug) }}" class="btn-next-project"><i
+                                        class="bi bi-arrow-left"></i> Previous Project</a>
+                            @endif
+                            @if ($portfolio->project_url)
+                                <a href="{{ $portfolio->project_url }}" class="btn-view-project" target="_blank">View
+                                    Live Project</a>
+                            @endif
+                            @if ($nextproject)
+                                <a href="{{ route('portfolio.show', $nextproject->slug) }}" class="btn-next-project">Next
+                                    Project <i class="bi bi-arrow-right"></i></a>
+                            @endif
                         </div>
                     </div>
                 </div>
