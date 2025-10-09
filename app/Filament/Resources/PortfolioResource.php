@@ -44,6 +44,14 @@ class PortfolioResource extends Resource
                             ->disabled()
                             ->dehydrated(),
 
+                        Forms\Components\Textarea::make('tagline')
+                            ->label('Tagline/Ringkasan Singkat')
+                            ->placeholder('Contoh: Modern E-Commerce Platform for Fashion Brand')
+                            ->maxLength(200)
+                            ->rows(2)
+                            ->helperText('Kalimat pendek yang menggambarkan proyek (maks. 200 karakter)')
+                            ->columnSpanFull(),
+
                         Forms\Components\Select::make('category')
                             ->label('Kategori')
                             ->options([
@@ -88,9 +96,17 @@ class PortfolioResource extends Resource
 
                 Forms\Components\Section::make('Deskripsi & Detail')
                     ->schema([
+                        Forms\Components\Textarea::make('project_overview')
+                            ->label('Project Overview')
+                            ->placeholder('Ringkasan proyek dalam 2-3 paragraf...')
+                            ->rows(4)
+                            ->helperText('Penjelasan singkat tentang latar belakang, tujuan, dan hasil proyek')
+                            ->columnSpanFull(),
+
                         Forms\Components\RichEditor::make('description')
-                            ->label('Deskripsi')
+                            ->label('Deskripsi Lengkap')
                             ->required()
+                            ->helperText('Detail lengkap tentang proyek, proses, dan hasil')
                             ->columnSpanFull(),
 
                         Forms\Components\TagsInput::make('technologies')
@@ -181,7 +197,8 @@ class PortfolioResource extends Resource
                     ->label('Judul')
                     ->searchable()
                     ->sortable()
-                    ->weight('bold'),
+                    ->weight('bold')
+                    ->description(fn(Portfolio $record): ?string => $record->tagline),
 
                 Tables\Columns\TextColumn::make('category')
                     ->label('Kategori')

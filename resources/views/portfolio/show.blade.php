@@ -118,9 +118,11 @@
                         @endif
 
                         <div class="project-overview">
-                            <p class="lead">
-                                {!! $portfolio->description !!}
-                            </p>
+                            @if ($portfolio->project_overview)
+                                <p class="lead">
+                                    {{ $portfolio->project_overview }}
+                                </p>
+                            @endif
 
                             <div class="accordion project-accordion" id="portfolio-details-projectAccordion">
                                 <div class="accordion-item" data-aos="fade-up">
@@ -128,7 +130,7 @@
                                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                             data-bs-target="#portfolio-details-collapse-1" aria-expanded="true"
                                             aria-controls="collapseOne">
-                                            <i class="bi bi-clipboard-data me-2"></i> Project Overview
+                                            <i class="bi bi-clipboard-data me-2"></i> Project Description
                                         </button>
                                     </h2>
                                     <div id="portfolio-details-collapse-1" class="accordion-collapse collapse show"
