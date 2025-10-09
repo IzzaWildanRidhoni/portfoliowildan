@@ -211,14 +211,6 @@ class PortfolioResource extends Resource
                     ->searchable()
                     ->toggleable(),
 
-                Tables\Columns\TextColumn::make('key_features')
-                    ->label('Fitur Utama')
-                    ->badge()
-                    ->separator(',')
-                    ->limit(3)
-                    ->toggleable()
-                    ->wrap(),
-
                 Tables\Columns\TextColumn::make('project_date')
                     ->label('Tanggal')
                     ->date('d M Y')

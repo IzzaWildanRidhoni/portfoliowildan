@@ -104,17 +104,17 @@ class ContactMessageResource extends Resource
 
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama')
-                    ->searchable()
-                    ->sortable()
-                    ->weight('bold'),
+                    ->formatStateUsing(function ($state, $record) {
+                        return "<div>
+                            <strong>{$record->name}</strong><br>
+                            <span class='text-gray-500 text-sm'>{$record->email}</span>
+                        </div>";
+                    })
+                    ->html() // penting agar HTML-nya dirender
+                    ->searchable(['name', 'email'])
+                    ->sortable(['name']),
 
-                Tables\Columns\TextColumn::make('email')
-                    ->label('Email')
-                    ->searchable()
-                    ->sortable()
-                    ->copyable()
-                    ->copyMessage('Email copied!')
-                    ->icon('heroicon-o-envelope'),
+
 
                 Tables\Columns\TextColumn::make('subject')
                     ->label('Subject')
@@ -127,13 +127,6 @@ class ContactMessageResource extends Resource
                         }
                         return $state;
                     }),
-
-                Tables\Columns\TextColumn::make('message')
-                    ->label('Pesan')
-                    ->limit(50)
-                    ->searchable()
-                    ->toggleable()
-                    ->wrap(),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Diterima')
@@ -172,38 +165,43 @@ class ContactMessageResource extends Resource
                     }),
             ])
             ->actions([
-                Tables\Actions\Action::make('markAsRead')
-                    ->label('Tandai Dibaca')
-                    ->icon('heroicon-o-check')
-                    ->color('success')
-                    ->visible(fn($record) => $record->status === 'unread')
-                    ->requiresConfirmation()
-                    ->action(function (ContactMessage $record) {
-                        $record->markAsRead();
-                        Notification::make()
-                            ->title('Pesan ditandai sebagai sudah dibaca')
-                            ->success()
-                            ->send();
-                    }),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('markAsRead')
+                        ->label('Tandai Dibaca')
+                        ->icon('heroicon-o-check')
+                        ->color('success')
+                        ->visible(fn($record) => $record->status === 'unread')
+                        ->requiresConfirmation()
+                        ->action(function (ContactMessage $record) {
+                            $record->markAsRead();
+                            Notification::make()
+                                ->title('Pesan ditandai sebagai sudah dibaca')
+                                ->success()
+                                ->send();
+                        }),
 
-                Tables\Actions\Action::make('markAsReplied')
-                    ->label('Tandai Dibalas')
-                    ->icon('heroicon-o-paper-airplane')
-                    ->color('success')
-                    ->visible(fn($record) => in_array($record->status, ['unread', 'read']))
-                    ->requiresConfirmation()
-                    ->action(function (ContactMessage $record) {
-                        $record->markAsReplied();
-                        Notification::make()
-                            ->title('Pesan ditandai sebagai sudah dibalas')
-                            ->success()
-                            ->send();
-                    }),
+                    Tables\Actions\Action::make('markAsReplied')
+                        ->label('Tandai Dibalas')
+                        ->icon('heroicon-o-paper-airplane')
+                        ->color('success')
+                        ->visible(fn($record) => in_array($record->status, ['unread', 'read']))
+                        ->requiresConfirmation()
+                        ->action(function (ContactMessage $record) {
+                            $record->markAsReplied();
+                            Notification::make()
+                                ->title('Pesan ditandai sebagai sudah dibalas')
+                                ->success()
+                                ->send();
+                        }),
 
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
+                    ->label('Aksi') // Label untuk dropdown
+                    ->icon('heroicon-o-cog-6-tooth') // Ikon dropdown
             ])
+
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\BulkAction::make('markAsRead')

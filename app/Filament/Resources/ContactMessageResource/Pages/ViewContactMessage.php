@@ -7,6 +7,8 @@ use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
+use Filament\Notifications\Notification;
+use App\Models\ContactMessage;
 
 class ViewContactMessage extends ViewRecord
 {
@@ -15,6 +17,40 @@ class ViewContactMessage extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('markAsRead')
+                ->label('Tandai Sudah Dibaca')
+                ->icon('heroicon-o-check')
+                ->color('success')
+                ->visible(fn(ContactMessage $record) => $record->status === 'unread')
+                ->requiresConfirmation()
+                ->action(function (ContactMessage $record) {
+                    $record->markAsRead();
+
+                    Notification::make()
+                        ->title('Pesan ditandai sebagai sudah dibaca')
+                        ->success()
+                        ->send();
+
+                    $this->redirect($this->getResource()::getUrl('view', ['record' => $record]));
+                }),
+
+            Actions\Action::make('markAsReplied')
+                ->label('Tandai Sudah Dibalas')
+                ->icon('heroicon-o-paper-airplane')
+                ->color('primary')
+                ->visible(fn(ContactMessage $record) => in_array($record->status, ['unread', 'read']))
+                ->requiresConfirmation()
+                ->action(function (ContactMessage $record) {
+                    $record->markAsReplied();
+
+                    Notification::make()
+                        ->title('Pesan ditandai sebagai sudah dibalas')
+                        ->success()
+                        ->send();
+
+                    $this->redirect($this->getResource()::getUrl('view', ['record' => $record]));
+                }),
+
             Actions\EditAction::make(),
             Actions\DeleteAction::make(),
         ];
