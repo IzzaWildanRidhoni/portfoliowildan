@@ -134,51 +134,11 @@
                                     <div id="portfolio-details-collapse-1" class="accordion-collapse collapse show"
                                         data-bs-parent="#portfolio-details-projectAccordion">
                                         <div class="accordion-body">
-                                            <p>Cras ultricies ligula sed magna dictum porta. Nulla quis lorem ut libero
-                                                malesuada feugiat. Curabitur non nulla sit amet nisl tempus convallis quis
-                                                ac lectus. Pellentesque in ipsum id orci porta dapibus. Vestibulum ac diam
-                                                sit amet quam vehicula elementum sed sit amet dui.</p>
+                                            {!! $portfolio->description !!}
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="accordion-item" data-aos="fade-up" data-aos-delay="100">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#portfolio-details-collapse-2" aria-expanded="false"
-                                            aria-controls="collapseTwo">
-                                            <i class="bi bi-exclamation-diamond me-2"></i> The Challenge
-                                        </button>
-                                    </h2>
-                                    <div id="portfolio-details-collapse-2" class="accordion-collapse collapse"
-                                        data-bs-parent="#portfolio-details-projectAccordion">
-                                        <div class="accordion-body">
-                                            <p>Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Vivamus suscipit
-                                                tortor eget felis porttitor volutpat. Curabitur aliquet quam id dui posuere
-                                                blandit. Praesent sapien massa, convallis a pellentesque nec, egestas non
-                                                nisi. Sed porttitor lectus nibh.</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="accordion-item" data-aos="fade-up" data-aos-delay="200">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#portfolio-details-collapse-3" aria-expanded="false"
-                                            aria-controls="collapseThree">
-                                            <i class="bi bi-award me-2"></i> The Solution
-                                        </button>
-                                    </h2>
-                                    <div id="portfolio-details-collapse-3" class="accordion-collapse collapse"
-                                        data-bs-parent="#portfolio-details-projectAccordion">
-                                        <div class="accordion-body">
-                                            <p>Donec sollicitudin molestie malesuada. Curabitur arcu erat, accumsan id
-                                                imperdiet et, porttitor at sem. Vestibulum ante ipsum primis in faucibus
-                                                orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit
-                                                amet aliquam vel, ullamcorper sit amet ligula.</p>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
@@ -203,10 +163,6 @@
                         </div>
 
                         <div class="cta-buttons" data-aos="fade-up" data-aos-delay="400">
-                            @if ($prevproject)
-                                <a href="{{ route('portfolio.show', $prevproject->slug) }}" class="btn-next-project"><i
-                                        class="bi bi-arrow-left"></i> Previous Project</a>
-                            @endif
                             @if ($portfolio->project_url)
                                 <a href="{{ $portfolio->project_url }}" class="btn-view-project" target="_blank">View
                                     Live Project</a>
