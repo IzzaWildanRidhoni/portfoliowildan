@@ -18,8 +18,8 @@
                             experiences. Combining technical precision with creative thinking, I help transform ideas into
                             impactful solutions.</p>
                         <div class="hero-actions" data-aos="fade-up" data-aos-delay="500">
-                            <a href="portfolio.html" class="btn btn-primary">View My Work</a>
-                            <a href="contact.html" class="btn btn-outline">Get In Touch</a>
+                            <a href="{{ route('portfolio') }}" class="btn btn-primary">View My Work</a>
+                            <a href="{{ route('contact') }}" class="btn btn-outline">Get In Touch</a>
                         </div>
                         <div class="social-links" data-aos="fade-up" data-aos-delay="600">
                             <a href="#"><i class="bi bi-twitter"></i></a>
