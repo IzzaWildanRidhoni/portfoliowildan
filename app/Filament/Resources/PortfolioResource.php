@@ -32,7 +32,8 @@ class PortfolioResource extends Resource
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => 
+                            ->afterStateUpdated(
+                                fn(string $operation, $state, Forms\Set $set) =>
                                 $operation === 'create' ? $set('slug', Str::slug($state)) : null
                             ),
 
@@ -43,7 +44,7 @@ class PortfolioResource extends Resource
                             ->disabled()
                             ->dehydrated(),
 
-                            Forms\Components\Select::make('category')
+                        Forms\Components\Select::make('category')
                             ->label('Kategori')
                             ->options([
                                 'Web Development' => 'Web Development',
@@ -68,7 +69,7 @@ class PortfolioResource extends Resource
                             ->createOptionUsing(function (array $data) {
                                 return $data['name'];
                             }),
-                        
+
 
                         Forms\Components\TextInput::make('client')
                             ->label('Nama Klien')

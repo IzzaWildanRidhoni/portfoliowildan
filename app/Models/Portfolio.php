@@ -27,6 +27,7 @@ class Portfolio extends Model
 
     protected $casts = [
         'project_date' => 'date',
+        'image' => 'string',
         'technologies' => 'array',
         'gallery' => 'array',
         'is_featured' => 'boolean',

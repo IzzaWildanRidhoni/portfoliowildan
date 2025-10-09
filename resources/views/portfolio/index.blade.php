@@ -30,10 +30,10 @@
                         <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-company">
                             <div class="portfolio-card">
                                 <div class="portfolio-img">
-                                    <img src="{{ asset('img/portfolio/portfolio-2.webp') }}" alt="Apps Project"
-                                        class="img-fluid">
+                                    <img src="{{ $item->image ? asset('storage/' . $item->image) : asset('img/portfolio/portfolio-2.webp') }}"
+                                        alt="Apps Project" class="img-fluid">
                                     <div class="portfolio-overlay">
-                                        <a href="{{ asset('img/portfolio/portfolio-2.webp') }}"
+                                        <a href="{{ $item->image ? asset('storage/' . $item->image) : asset('img/portfolio/portfolio-2.webp') }}"
                                             class="glightbox portfolio-lightbox"><i class="bi bi-plus"></i></a>
                                         <a href="{{ route('portfolio.show', $item->slug) }}" class="portfolio-details-link"
                                             title="More Details"><i class="bi bi-link-45deg"></i></a>
