@@ -10,6 +10,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             ResumeSeeder::class,
+            ContactMessageSeeder::class,
         ]);
     }
 }
